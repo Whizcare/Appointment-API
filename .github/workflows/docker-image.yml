@@ -28,4 +28,4 @@ jobs:
           context: .
           file: Appointment_ServiceLayer/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/appointment:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/appointmentk:latest
