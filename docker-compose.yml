@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  appointment_service:
+    image: ${DOCKER_REGISTRY-}appointmentservice
+    build:
+      context: .
+      dockerfile: Appointment_ServiceLayer/Dockerfile
