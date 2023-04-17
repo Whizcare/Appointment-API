@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-api
+  template:
+    metadata:
+      labels:
+        app: appointment-api
+    spec:
+      containers:
+        - name: appointment-api
+          image: dhanush121/appointmentk:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: appointment-api
+  ports:
+    - port: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appointment-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /api/Appointment/getappointmentsbypatientid
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/BookAppiontment
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/Email_Notification
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/Update/?p*
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/UpdateCheckUp/?p*
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+
+      - path: /api/Appointment/getappointmentsbyDate
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/getappointmentsbyDoctoridAndStatus
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/Appointment/GetAppointmentsAfterCheckup
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/PatientCheckUp/GetCheckUpDetailsByAppointmentId
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80
+      - path: /api/PatientCheckUp/AddcheckUpdetails
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-api-service
+            port:
+              number: 80        
